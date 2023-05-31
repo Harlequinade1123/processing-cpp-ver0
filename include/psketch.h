@@ -69,6 +69,7 @@ public:
     virtual void rotateX(float angle) final;
     virtual void rotateY(float angle) final;
     virtual void rotateZ(float angle) final;
+    virtual void scale(float xRate, float yRate, float zRate) final;
     virtual void scale(float xRate, float yRate) final;
     virtual void scale(float rate) final;
     virtual void pushMatrix() final;
@@ -94,11 +95,12 @@ public:
     virtual void line(float x1, float y1, float x2, float y2) final;
     virtual void line(float x1, float y1, float z1, float x2, float y2, float z2) final;
     virtual void rect(float x, float y, float width, float height) final;
-
     virtual void ellipse(float x, float y, float width, float height) final;
     virtual void circle(float x, float y, float size) final;
+
     virtual void box(float size) final;
     virtual void box(float w, float h, float d) final;
+    virtual void cylinder(float r, float d) final;
 
 protected:
     GLFWwindow * window = nullptr;

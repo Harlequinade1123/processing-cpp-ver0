@@ -13,49 +13,45 @@ void Sketch::setup()
 void Sketch::draw()
 {
     background(200);
-    /**
-    fill(250);
-    stroke(100, 100, 100);
-    //strokeCap(SQUARE);
-    //translate(WIDTH/2, HEIGHT/2);
-    //rectMode(CENTER);
-    //translate(200, 0);
-    //rect(100,0,100,100);
-    //ellipse(100, 500, 100, 100);
-    //point(100, 10);
-    point(10,10,100);
-    stroke(0,255,0);
-    line(10,50,0,MOUSEX,MOUSEY,100);
-    stroke(20);
-    line(10,50,MOUSEX,MOUSEY);
-    **/
-    strokeWeight(2);
-    strokeCap(ROUND);
-    stroke(20);
-    line(0,0,MOUSEX,MOUSEY);
-    line(0,0,0,MOUSEX,MOUSEY,100);
-    point(150, 10,21);
-
+    strokeWeight(1.5);
     stroke(100);
+    strokeCap(ROUND);
     for (int i = -8; i <= 8; i++)
     {
         line(-400, 50 * i, 400, 50 * i);
         line(50 * i, -400, 50 * i, 400);
     }
-    fill(255,0,0);
-    stroke(10);
-    rectMode(CENTER);
-    //rect(0,0,100,100);
-    translate(100,-100);
-    rect(0,0,100,100);
-    rotate(M_PI/6);
-    box(100);
+    
+    float robot_size   = 100;
+    float wheel_radius = 20;
+    float wheel_width  = 10;
+    stroke(50);
+    translate(this->robot_x, this->robot_y, robot_size / 4 + wheel_radius);
+    rotateZ(this->robot_yaw);
+    fill(150);
+    box(robot_size, robot_size, robot_size / 2);
+    fill(100);
+    pushMatrix();
+    translate(robot_size / 2, wheel_width / 2 + robot_size / 2,-robot_size / 4);
+    rotateX(M_PI_2);
+    cylinder(wheel_radius, wheel_width);
+    popMatrix();
+    pushMatrix();
+    translate(robot_size / 2,-wheel_width / 2 - robot_size / 2,-robot_size / 4);
+    rotateX(M_PI_2);
+    cylinder(wheel_radius, wheel_width);
+    popMatrix();
+    pushMatrix();
+    translate(-robot_size / 2, wheel_width / 2 + robot_size / 2,-robot_size / 4);
+    rotateX(M_PI_2);
+    cylinder(wheel_radius, wheel_width);
+    popMatrix();
+    pushMatrix();
+    translate(-robot_size / 2,-wheel_width / 2 - robot_size / 2,-robot_size / 4);
+    rotateX(M_PI_2);
+    cylinder(wheel_radius, wheel_width);
+    popMatrix();
 
-    for (int i = 0; i <= 360; i++)
-    {
-        point(100*cos(i * M_PI / 360), 100*sin(i * M_PI / 360));
-    }
-    //std::cout << MOUSEX << " " << MOUSEY << std::endl;
 }
 
 void Sketch::keyEvent(int key, int action)
@@ -64,10 +60,23 @@ void Sketch::keyEvent(int key, int action)
     {
         if (key == GLFW_KEY_SPACE)
             std::cout << "Space Pressed" << std::endl;
-        if (key == GLFW_KEY_LEFT)
-            rotateCamera(M_PI / 36);
+        if (key == GLFW_KEY_W)
+            robot_x += 10.0;
+            //rotateCamera(M_PI / 36);
+        if (key == GLFW_KEY_S)
+            robot_x -= 20.0;
+        if (key == GLFW_KEY_A)
+            robot_y += 20.0;
+        if (key == GLFW_KEY_D)
+            robot_y -= 20.0;
+        if (key == GLFW_KEY_E)
+            robot_yaw -= M_PI / 18.0;
+        if (key == GLFW_KEY_Q)
+            robot_yaw += M_PI / 18.0;
         if (key == GLFW_KEY_RIGHT)
-            rotateCamera(-M_PI / 36);
+            rotateCamera(M_PI / 18);
+        if (key == GLFW_KEY_LEFT)
+            rotateCamera(-M_PI / 18);
     }
 }
 

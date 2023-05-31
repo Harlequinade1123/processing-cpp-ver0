@@ -3,6 +3,10 @@
 
 class Sketch : public PSketch
 {
+    private:
+    float robot_x = 0.0;
+    float robot_y = 0.0;
+    float robot_yaw = 0.0;
     public:
     Sketch();
     void setup();

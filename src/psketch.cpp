@@ -298,10 +298,33 @@ void PSketch::size(int width, int height, GraphicsMode mode)
 }
 
 void PSketch::ellipse(float x, float y, float width, float height)
-{}
+{
+    glm::mat4 model = this->transformationMat;
+    model = glm::translate(model, glm::vec3(x + ELLIPSEMODE*(width / 2), y + ELLIPSEMODE*(height / 2), 0));
+    glMatrixMode(GL_MODELVIEW);
+    glLoadMatrixf(glm::value_ptr(model));
+    
+    glColor4f(this->style.fillColor[0], this->style.fillColor[1], this->style.fillColor[2], this->style.fillColor[3]);
+    glBegin(GL_POLYGON);
+        for (int i = 0; i <= 360; i++)
+        {
+            glVertex3f(width * cos(M_PI / 180.0 * static_cast<float>(i)), height * sin(M_PI / 180.0 * static_cast<float>(i)), 0.0);
+        }
+    glEnd();
+
+    glColor4f(this->style.stroke[0], this->style.stroke[1], this->style.stroke[2], this->style.stroke[3]);
+    glBegin(GL_LINE_LOOP);
+        for (int i = 0; i <= 360; i++)
+        {
+            glVertex3f(width * cos(M_PI / 180.0 * static_cast<float>(i)), height * sin(M_PI / 180.0 * static_cast<float>(i)), 0.0);
+        }
+    glEnd();
+}
 
 void PSketch::circle(float x, float y, float size)
-{}
+{
+    this->ellipse(x, y, size, size);
+}
 
 void PSketch::translate(float x, float y)
 {
@@ -336,6 +359,11 @@ void PSketch::rotateY(float angle)
 void PSketch::rotateZ(float angle)
 {
     this->transformationMat = glm::rotate(this->transformationMat, angle, glm::vec3(0, 0, 1));
+}
+
+void PSketch::scale(float xRate, float yRate, float zRate)
+{
+    this->transformationMat = glm::scale(this->transformationMat, glm::vec3(xRate, yRate, zRate));
 }
 
 void PSketch::scale(float xRate, float yRate)
@@ -601,82 +629,107 @@ void PSketch::rotateCamera(float radian)
 
 void PSketch::box(float size)
 {
+    this->box(size, size, size);
+}
+
+void PSketch::box(float w, float h, float d)
+{
     glm::mat4 model = this->transformationMat;
     glMatrixMode(GL_MODELVIEW);
     glLoadMatrixf(glm::value_ptr(model));
     
     glColor4f(this->style.fillColor[0], this->style.fillColor[1], this->style.fillColor[2], this->style.fillColor[3]);
     glBegin(GL_QUADS);
-        glVertex3f(size / 2, size / 2, size / 2);
-        glVertex3f(size / 2, size / 2,-size / 2);
-        glVertex3f(size / 2,-size / 2,-size / 2);
-        glVertex3f(size / 2,-size / 2, size / 2);
+        glVertex3f(w / 2, h / 2, d / 2);
+        glVertex3f(w / 2, h / 2,-d / 2);
+        glVertex3f(w / 2,-h / 2,-d / 2);
+        glVertex3f(w / 2,-h / 2, d / 2);
 
-        glVertex3f(-size / 2, size / 2, size / 2);
-        glVertex3f(-size / 2, size / 2,-size / 2);
-        glVertex3f(-size / 2,-size / 2,-size / 2);
-        glVertex3f(-size / 2,-size / 2, size / 2);
+        glVertex3f(-w / 2, h / 2, d / 2);
+        glVertex3f(-w / 2, h / 2,-d / 2);
+        glVertex3f(-w / 2,-h / 2,-d / 2);
+        glVertex3f(-w / 2,-h / 2, d / 2);
 
-        glVertex3f( size / 2, size / 2, size / 2);
-        glVertex3f(-size / 2, size / 2, size / 2);
-        glVertex3f(-size / 2, size / 2,-size / 2);
-        glVertex3f( size / 2, size / 2,-size / 2);
+        glVertex3f( w / 2, h / 2, d / 2);
+        glVertex3f(-w / 2, h / 2, d / 2);
+        glVertex3f(-w / 2, h / 2,-d / 2);
+        glVertex3f( w / 2, h / 2,-d / 2);
 
-        glVertex3f( size / 2, -size / 2, size / 2);
-        glVertex3f(-size / 2, -size / 2, size / 2);
-        glVertex3f(-size / 2, -size / 2,-size / 2);
-        glVertex3f( size / 2, -size / 2,-size / 2);
+        glVertex3f( w / 2, -h / 2, d / 2);
+        glVertex3f(-w / 2, -h / 2, d / 2);
+        glVertex3f(-w / 2, -h / 2,-d / 2);
+        glVertex3f( w / 2, -h / 2,-d / 2);
 
-        glVertex3f( size / 2, size / 2, size / 2);
-        glVertex3f(-size / 2, size / 2, size / 2);
-        glVertex3f(-size / 2,-size / 2, size / 2);
-        glVertex3f( size / 2,-size / 2, size / 2);
+        glVertex3f( w / 2, h / 2, d / 2);
+        glVertex3f(-w / 2, h / 2, d / 2);
+        glVertex3f(-w / 2,-h / 2, d / 2);
+        glVertex3f( w / 2,-h / 2, d / 2);
 
-        glVertex3f( size / 2, size / 2,-size / 2);
-        glVertex3f(-size / 2, size / 2,-size / 2);
-        glVertex3f(-size / 2,-size / 2,-size / 2);
-        glVertex3f( size / 2,-size / 2,-size / 2);
+        glVertex3f( w / 2, h / 2,-d / 2);
+        glVertex3f(-w / 2, h / 2,-d / 2);
+        glVertex3f(-w / 2,-h / 2,-d / 2);
+        glVertex3f( w / 2,-h / 2,-d / 2);
     glEnd();
 
     glColor4f(this->style.stroke[0], this->style.stroke[1], this->style.stroke[2], this->style.stroke[3]);
     glBegin(GL_LINES);
-        glVertex3f(size / 2, size / 2, size / 2);
-        glVertex3f(size / 2, size / 2,-size / 2);
+        glVertex3f(w / 2, h / 2, d / 2);
+        glVertex3f(w / 2, h / 2,-d / 2);
 
-        glVertex3f(size / 2, size / 2 + this->style.strokeWeight * 0.5,-size / 2);
-        glVertex3f(size / 2,-size / 2 - this->style.strokeWeight * 0.5,-size / 2);
+        glVertex3f(w / 2, h / 2 + this->style.strokeWeight * 0.5,-d / 2);
+        glVertex3f(w / 2,-h / 2 - this->style.strokeWeight * 0.5,-d / 2);
 
-        glVertex3f(size / 2,-size / 2,-size / 2);
-        glVertex3f(size / 2,-size / 2, size / 2);
+        glVertex3f(w / 2,-h / 2,-d / 2);
+        glVertex3f(w / 2,-h / 2, d / 2);
 
-        glVertex3f(size / 2,-size / 2 - this->style.strokeWeight * 0.5, size / 2);
-        glVertex3f(size / 2, size / 2 + this->style.strokeWeight * 0.5, size / 2);
+        glVertex3f(w / 2,-h / 2 - this->style.strokeWeight * 0.5, d / 2);
+        glVertex3f(w / 2, h / 2 + this->style.strokeWeight * 0.5, d / 2);
 
-        glVertex3f(-size / 2, size / 2, size / 2);
-        glVertex3f(-size / 2, size / 2,-size / 2);
+        glVertex3f(-w / 2, h / 2, d / 2);
+        glVertex3f(-w / 2, h / 2,-d / 2);
 
-        glVertex3f(-size / 2, size / 2 + this->style.strokeWeight * 0.5,-size / 2);
-        glVertex3f(-size / 2,-size / 2 - this->style.strokeWeight * 0.5,-size / 2);
+        glVertex3f(-w / 2, h / 2 + this->style.strokeWeight * 0.5,-d / 2);
+        glVertex3f(-w / 2,-h / 2 - this->style.strokeWeight * 0.5,-d / 2);
 
-        glVertex3f(-size / 2,-size / 2,-size / 2);
-        glVertex3f(-size / 2,-size / 2, size / 2);
+        glVertex3f(-w / 2,-h / 2,-d / 2);
+        glVertex3f(-w / 2,-h / 2, d / 2);
 
-        glVertex3f(-size / 2,-size / 2 - this->style.strokeWeight * 0.5, size / 2);
-        glVertex3f(-size / 2, size / 2 + this->style.strokeWeight * 0.5, size / 2);
+        glVertex3f(-w / 2,-h / 2 - this->style.strokeWeight * 0.5, d / 2);
+        glVertex3f(-w / 2, h / 2 + this->style.strokeWeight * 0.5, d / 2);
 
-        glVertex3f( size / 2, size / 2, size / 2);
-        glVertex3f(-size / 2, size / 2, size / 2);
+        glVertex3f( w / 2, h / 2, d / 2);
+        glVertex3f(-w / 2, h / 2, d / 2);
 
-        glVertex3f(-size / 2, size / 2,-size / 2);
-        glVertex3f( size / 2, size / 2,-size / 2);
+        glVertex3f(-w / 2, h / 2,-d / 2);
+        glVertex3f( w / 2, h / 2,-d / 2);
 
-        glVertex3f( size / 2, -size / 2, size / 2);
-        glVertex3f(-size / 2, -size / 2, size / 2);
+        glVertex3f( w / 2,-h / 2, d / 2);
+        glVertex3f(-w / 2,-h / 2, d / 2);
 
-        glVertex3f(-size / 2, -size / 2,-size / 2);
-        glVertex3f( size / 2, -size / 2,-size / 2);
+        glVertex3f(-w / 2,-h / 2,-d / 2);
+        glVertex3f( w / 2,-h / 2,-d / 2);
     glEnd();
 }
 
-void PSketch::box(float w, float h, float d)
-{}
+void PSketch::cylinder(float r, float d)
+{
+    glm::mat4 model = this->transformationMat;
+    glMatrixMode(GL_MODELVIEW);
+    glLoadMatrixf(glm::value_ptr(model));
+    
+    glColor4f(this->style.fillColor[0], this->style.fillColor[1], this->style.fillColor[2], this->style.fillColor[3]);
+    glBegin(GL_QUAD_STRIP);
+        for (int i = 0; i <= 360; i++)
+        {
+            glVertex3f(r * cos(M_PI / 180.0 * static_cast<float>(i)), r * sin(M_PI / 180.0 * static_cast<float>(i)),-d / 2.0);
+            glVertex3f(r * cos(M_PI / 180.0 * static_cast<float>(i)), r * sin(M_PI / 180.0 * static_cast<float>(i)), d / 2.0);
+        }
+    glEnd();
+
+    glColor4f(this->style.stroke[0], this->style.stroke[1], this->style.stroke[2], this->style.stroke[3]);
+    translate(0.0, 0.0, d / 2.0);
+    this->circle(0.0, 0.0, r);
+    translate(0.0, 0.0,-d);
+    this->circle(0.0, 0.0, r);
+    translate(0.0, 0.0, d / 2.0);
+}
