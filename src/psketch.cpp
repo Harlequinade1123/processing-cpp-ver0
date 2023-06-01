@@ -627,6 +627,29 @@ void PSketch::rotateCamera(float radian)
     this->cameraRotation += radian;
 }
 
+void PSketch::setCamera(float distance, float height, float radian)
+{
+    this->cameraDistance = distance;
+    this->cameraHeight   = height;
+    this->cameraRotation = radian;
+    if (this->cameraDistance < 0.1)
+    {
+        this->cameraDistance = 0.1;
+    }
+    if (1000 < this->cameraDistance)
+    {
+        this->cameraDistance = 1000;
+    }
+    if (this->cameraHeight < 10)
+    {
+        this->cameraHeight = 10;
+    }
+    if (1000 < this->cameraHeight)
+    {
+        this->cameraHeight = 1000;
+    }
+}
+
 void PSketch::box(float size)
 {
     this->box(size, size, size);

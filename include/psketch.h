@@ -76,6 +76,7 @@ public:
     virtual void popMatrix() final;
     virtual void translateCamera(float distance, float height) final;
     virtual void rotateCamera(float radian) final;
+    virtual void setCamera(float distance, float height, float radian) final;
     virtual float map(float value, float start1, float stop1, float start2, float stop2) final;
     virtual float radians(float degree) final;
     virtual void rectMode(int mode) final;
