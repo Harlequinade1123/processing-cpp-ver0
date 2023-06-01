@@ -57,10 +57,10 @@ void Sketch::draw()
     strokeWeight(1.5);
     stroke(100);
     strokeCap(ROUND);
-    for (int i = -16; i <= 16; i++)
+    for (int i = -8; i <= 8; i++)
     {
-        line(-100 * 16, 100 * i, 100 * 16, 100 * i);
-        line(100 * i, -100 * 16, 100 * i, 100 * 16);
+        line(-500 * 8, 500 * i, 500 * 8, 500 * i);
+        line(500 * i, -500 * 8, 500 * i, 500 * 8);
     }
     
     double dt = 1.0 / 500.0;
