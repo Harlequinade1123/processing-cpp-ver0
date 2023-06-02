@@ -15,5 +15,8 @@ find_package(GLEW REQUIRED)
 include_directories(${GLEW_INCLUDE_DIRS})
 link_libraries(${GLEW_LIBRARIES})
 
+find_package(Threads REQUIRED)
+
 add_executable(processing-cpp src/main.cpp src/sketch.cpp src/psketch.cpp)
 target_link_libraries(processing-cpp glfw OpenGL::GL)
+target_link_libraries(processing-cpp Threads::Threads)

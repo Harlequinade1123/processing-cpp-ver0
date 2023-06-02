@@ -34,4 +34,5 @@ class Sketch : public PSketch
     void mouseButtonEvent(int button, int action);
     void cursorPosEvent(double xpos, double ypos);
     void scrollEvent(double xoffset, double yoffset);
+    void parallelTask1();
 };

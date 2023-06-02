@@ -5,6 +5,15 @@ Sketch::Sketch() : PSketch()
     size(800, 800, P3D);
 }
 
+void Sketch::parallelTask1()
+{
+    int a = 0;
+    while(!glfwWindowShouldClose(this->window))
+    {
+        std::cout << "para" << a++ << std::endl;
+    }
+}
+
 void Sketch::setup()
 {
     stroke(255, 255, 255);
@@ -96,36 +105,36 @@ void Sketch::cursorPosEvent(double xpos, double ypos)
 {
     if (glfwGetMouseButton(this->window, GLFW_MOUSE_BUTTON_LEFT) == GLFW_PRESS)
     {
-        camera_angle -= (MOUSEX - old_MOUSEX) / 2 * M_PI / 180;
-        if (camera_angle < -2 * M_PI)
+        this->camera_angle -= (MOUSEX - old_MOUSEX) / 2 * M_PI / 180;
+        if (this->camera_angle < -2 * M_PI)
         {
-            camera_angle += 2 * M_PI;
+            this->camera_angle += 2 * M_PI;
         }
-        else if (2 * M_PI < camera_angle)
+        else if (2 * M_PI < this->camera_angle)
         {
-            camera_angle -= 2 * M_PI;
+            this->camera_angle -= 2 * M_PI;
         }
         else
         {
-            camera_distance += old_MOUSEY - MOUSEY;
+            this->camera_distance += old_MOUSEY - MOUSEY;
         }
-        if (camera_distance < 0.1)
+        if (this->camera_distance < 0.1)
         {
-            camera_distance = 0.1;
+            this->camera_distance = 0.1;
         }
-        if (1000 < camera_distance)
+        if (1000 < this->camera_distance)
         {
-            camera_distance = 1000;
+            this->camera_distance = 1000;
         }
-        if (camera_height < 10)
+        if (this->camera_height < 10)
         {
-            camera_height = 10;
+            this->camera_height = 10;
         }
-        if (1000 < camera_height)
+        if (1000 < this->camera_height)
         {
-            camera_height = 1000;
+            this->camera_height = 1000;
         }
-        this->setCamera(camera_distance, camera_height, camera_angle);
+        this->setCamera(this->camera_distance, this->camera_height, this->camera_angle);
     }
     old_MOUSEX = MOUSEX;
     old_MOUSEY = MOUSEY;
@@ -133,8 +142,16 @@ void Sketch::cursorPosEvent(double xpos, double ypos)
 
 void Sketch::scrollEvent(double xoffset, double yoffset)
 {
-    camera_height += yoffset * 50;
-    this->setCamera(camera_distance, camera_height, camera_angle);
+    this->camera_height += yoffset * 50;
+    if (this->camera_height < 10)
+    {
+        this->camera_height = 10;
+    }
+    if (1000 < this->camera_height)
+    {
+        this->camera_height = 1000;
+    }
+    this->setCamera(this->camera_distance, this->camera_height, this->camera_angle);
 }
 
 void Sketch::drawRobot()

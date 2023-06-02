@@ -14,6 +14,7 @@
 #include <iostream>
 #include <vector>
 #include <cmath>
+#include <thread>
 
 void key_callback(GLFWwindow * window, int key, int scancode, int action, int mode);
 void mouse_button_callback(GLFWwindow * window, int button, int action, int mode);
@@ -53,6 +54,9 @@ public:
     virtual void mouseButtonEvent(int button, int action) {};
     virtual void cursorPosEvent(double xpos, double ypos) {};
     virtual void scrollEvent(double xoffset, double yoffset) {};
+    virtual void parallelTask1() {};
+    virtual void parallelTask2() {};
+    virtual void parallelTask3() {};
 
     virtual void background(int r, int g, int b) final;
     virtual void background(int c) final;
@@ -114,6 +118,10 @@ protected:
     const int CORNER = 1;
 
 private:
+    std::thread parallelThread1;
+    std::thread parallelThread2;
+    std::thread parallelThread3;
+
     int target_fps = 60;
 
     glm::mat4 transformationMat = glm::mat4(1.0);

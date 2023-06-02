@@ -103,6 +103,10 @@ void PSketch::run()
     float previousCount = glfwGetTime();
     int frameCount = 0;
 
+    parallelThread1 = std::thread([this]() { this->parallelTask1(); });
+    parallelThread2 = std::thread([this]() { this->parallelTask2(); });
+    parallelThread3 = std::thread([this]() { this->parallelTask3(); });
+
     while (!glfwWindowShouldClose(this->window))
     {
         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
@@ -163,6 +167,10 @@ void PSketch::run()
         //Resets the redraw flag
         needRedraw = false;
     }
+
+    parallelThread1.join();
+    parallelThread2.join();
+    parallelThread3.join();
 
     glfwTerminate();
 }
