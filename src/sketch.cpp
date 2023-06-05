@@ -7,12 +7,17 @@ Sketch::Sketch() : PSketch()
 
 void Sketch::parallelTask1()
 {
-    int a = 0;
     while(!glfwWindowShouldClose(this->window))
     {
-        std::cout << "para" << a++ << std::endl;
+        std::cout << "task 1" << std::endl;
     }
 }
+
+void Sketch::parallelTask2()
+{}
+
+void Sketch::parallelTask3()
+{}
 
 void Sketch::setup()
 {
